@@ -2,12 +2,19 @@ import React, { useState } from 'react'
 import TodoList from './TodoList';
 
 export default function Todo() {
-    const [task, setTask] = useState();
+    const [task, setTask] = useState("");
     const [taskList, setTaskList] = useState([]);
 
     function addTask() {
         let newArr = [...taskList];
-        newArr.push(task)
+        newArr.push({ "id": parseInt(newArr.length) + parseInt(1), "task": task })
+        setTaskList(newArr);
+        setTask(" ");
+    }
+
+
+    function removeItem(id) {
+        let newArr = taskList.filter((index) => index.id !== id);
         setTaskList(newArr);
     }
 
@@ -22,7 +29,7 @@ export default function Todo() {
                             <div className="row">
                                 <div className="col-xl-8">
                                     <label>Enter Task Name</label>
-                                    <input type="text" className="form-control" onChange={(e) => { setTask(e.target.value) }} placeholder="Enter task name" />
+                                    <input type="text" className="form-control" value={task} onChange={(e) => { setTask(e.target.value) }} placeholder="Enter task name" />
                                 </div>
 
                                 <div className='col-xl-4'>
@@ -32,7 +39,7 @@ export default function Todo() {
                             </div>
                         </form>
 
-                        <TodoList tasks={taskList}></TodoList>
+                        <TodoList tasks={taskList} removeItem={removeItem} ></TodoList>
 
                     </div>
                     {/* card body end here  */}
